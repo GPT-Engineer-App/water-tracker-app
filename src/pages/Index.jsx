@@ -1,12 +1,27 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Plus, RefreshCw } from "lucide-react";
 
 const Index = () => {
   const [waterCount, setWaterCount] = useState(0);
 
-  const addWater = () => setWaterCount(prev => prev + 1);
-  const resetWater = () => setWaterCount(0);
+  useEffect(() => {
+    const storedCount = localStorage.getItem('waterCount');
+    if (storedCount) {
+      setWaterCount(parseInt(storedCount, 10));
+    }
+  }, []);
+
+  const addWater = () => {
+    const newCount = waterCount + 1;
+    setWaterCount(newCount);
+    localStorage.setItem('waterCount', newCount.toString());
+  };
+
+  const resetWater = () => {
+    setWaterCount(0);
+    localStorage.setItem('waterCount', '0');
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
